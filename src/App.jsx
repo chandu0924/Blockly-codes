@@ -1,47 +1,33 @@
 import React, { useEffect, useRef, useState } from 'react';
-import * as Blockly from 'blockly';
-// import 'blockly/blockly.css'; // Uncomment if you want to use the CSS file locally
-import {javascriptGenerator} from 'blockly/javascript';
+import * as Blockly from 'blockly/core'; 
+import Toolbox from './components/Toolbox';  
+import { javascriptGenerator } from 'blockly/javascript';
 
 const App = () => {
-  const blocklyDiv = useRef(null); // Create a reference for the Blockly container
-  const [workspace, setWorkspace] = useState(null); // State to hold the Blockly workspace
+  const blocklyDiv = useRef(null);
+  const [workspace, setWorkspace] = useState(null);
 
   useEffect(() => {
     // Initialize Blockly
     const workspaceInstance = Blockly.inject(blocklyDiv.current, {
-      toolbox: `
-        <xml>
-          <block type="controls_repeat_ext"></block>
-          <block type="logic_boolean"></block>
-          <block type="math_number"></block>
-          <block type="text"></block>
-          <block type="controls_if"></block>
-          <block type="logic_compare"></block>
-          <block type="math_arithmetic"></block>
-          <block type="text_print"></block>
-        </xml>
-      `,
+      toolbox: Toolbox(),
+      trashcan: true,
     });
 
-    // Set the workspace state when Blockly is initialized
     setWorkspace(workspaceInstance);
 
-    // Cleanup when the component is unmounted
     return () => {
       if (workspaceInstance) {
         workspaceInstance.dispose();
       }
     };
-  }, []); // Empty dependency array ensures this effect only runs once when the component mounts
+  }, []);
 
-  // Function to generate JavaScript code from the blocks
   const generateCode = () => {
     if (workspace) {
       try {
         const code = javascriptGenerator.workspaceToCode(workspace);
-
-        console.log(code);  // Logs the generated JavaScript code
+        console.log(code);  
       } catch (error) {
         console.error("Error generating code:", error);
       }
