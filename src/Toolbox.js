@@ -1,3 +1,5 @@
+import "./customBlocks.js";
+
 const Toolbox = () => {
     return {
             kind: 'categoryToolbox',
@@ -75,6 +77,28 @@ const Toolbox = () => {
                   {
                     kind: 'block',
                     type: 'text_print',
+                  },
+                ],
+              },
+              {
+                kind: 'category',
+                name: 'custom blocks',
+                colour: '#F1C40F',
+                contents: [
+                  {
+                    kind: 'block',
+                    type: 'math_square',
+                  },
+                ],
+              },
+              {
+                kind: 'category',
+                name: 'circle',
+                colour: '#5C6BC0',
+                contents: [
+                  {
+                    kind: 'block',
+                    type: 'draw_circle',  
                   },
                 ],
               },

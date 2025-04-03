@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import * as Blockly from 'blockly';
 import Toolbox from './Toolbox';  
 import {javascriptGenerator} from 'blockly/javascript';
+import customBlocks from './customBlocks';
 
 const BlocklyApp = () => {
   const blocklyDiv = useRef(null);  
@@ -21,15 +22,21 @@ const BlocklyApp = () => {
     const code = javascriptGenerator.workspaceToCode(workspace);
     console.log(code);  
     outputDiv.current.textContent = code;  
+
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas before drawing
+    eval(code);  // Execute the generated code to draw the circle
   };
 
   useEffect(() => {
+    customBlocks();
     initBlockly();
   }, []); 
 
   return (
     <div>
-      <div id="blocklyDiv" ref={blocklyDiv} style={{ height: '480px', width: '600px', border: '1px solid black' }}></div>
+      <div id="blocklyDiv" ref={blocklyDiv} style={{ height: '600px', width: '1000px', border: '1px solid black' }}></div>
 
       <button onClick={generateCode}>Generate Code</button>
 
