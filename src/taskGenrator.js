@@ -1,25 +1,21 @@
+import {ws_instance} from './Programming.jsx'
 
+var taskCodeGenerator = new Blockly.Generator("JSON");
 
-Blockly.JavaScript['draw_circle'] = function(block) {
-    const radius = block.getFieldValue('RADIUS');
-    const centerX = block.getFieldValue('CENTER_X');
-    const centerY = block.getFieldValue('CENTER_Y');
-    
-    const code = `drawCircle(${centerX}, ${centerY}, ${radius});\n`;
+var generateCode = function (id_ = "") {
+    console.log(ws_instance)
+    if (ws_instance === null || ws_instance === undefined)
+      return ""
   
-    return code;
-  };
+    let result = ""
   
-
-function drawCircle(centerX, centerY, radius) {
-    const canvas = document.getElementById('myCanvas');
-    const ctx = canvas.getContext('2d');
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    ctx.fillStyle = 'blue';  
-    ctx.fill();
-    ctx.stroke();
+    var start_block = ws_instance.getBlocksByType("start", true)[0];
+    result += taskCodeGenerator.blockToCode(start_block, false);
+  
+    let copiedObject = JSON.parse(JSON.stringify(json_object));
+  
+    json_object = {};
+    return copiedObject
   }
+
+export { taskCodeGenerator, generateCode }

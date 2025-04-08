@@ -12,6 +12,7 @@ const BlocklyApp = () => {
 
   const [generatedCode, setGeneratedCode] = useState('');
   const [savedCode, setSavedCode] = useState('');
+  // const [savedCode, setSavedCode] = useState([]);
 
   const initBlockly = () => {
     if (!blocklyWorkspace.current) {  
@@ -39,11 +40,18 @@ const BlocklyApp = () => {
     }
   };
 
+  const onWorkspaceChange = (workspace) => {
+    ws_instance = workspace
+  }
   const generateCode = () => {
     const workspace = Blockly.getMainWorkspace();
     const code = javascriptGenerator.workspaceToCode(workspace);
     console.log(code);  
     outputDiv.current.textContent = code;  
+
+    // let convertedString = String(code);
+    // console.log(convertedString);
+    // setGeneratedCode(convertedString);
 
     setGeneratedCode(code);
 
