@@ -45,6 +45,7 @@ const BlocklyProvider = ( props ) => {
           onUpdateProgramXml, 
           onUpdateInitialXml, 
           saveTask,
+          savedTask,
           loadTask 
         }}>
             {props.children}

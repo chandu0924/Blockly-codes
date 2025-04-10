@@ -1,3 +1,5 @@
+import "./customBlocks";
+
 const Toolbox = () => {
   return {
     kind: 'categoryToolbox',

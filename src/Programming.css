@@ -1,0 +1,20 @@
+.workspace{
+    border: 1px solid black;
+}
+.workspace-container{
+    display: grid;
+    height: 600px;
+    grid-auto-flow: column;
+    grid-template-columns: 70% 30%;
+}
+.saved-program{
+    display: grid;
+    border: 1px solid black;
+    grid-template-rows: 40px auto;
+}
+
+.generated-code{
+    border: 1px solid #ccc;
+    padding: 10px; 
+    background: #f5f5f5;
+}
