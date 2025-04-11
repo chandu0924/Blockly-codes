@@ -34,6 +34,40 @@ const customBlocks = () => {
     }
   };
 
+  Blockly.Blocks["repeat_block"] = {
+  
+    init: function () {
+      this.appendDummyInput("type_holder")
+        .appendField("Repeat")
+        .appendField(
+          new Blockly.FieldDropdown(
+            [
+              ["for Iteration(s)", "Itr"],
+              ["until Time", "T"],
+              ["until expression met", "exp"]
+              // ["until Input ", "Inp"],
+            ],
+            this.validate
+          ),
+          "repeat_type"
+        );
+      this.appendDummyInput("dummy")
+      this.appendStatementInput("stm_holder").setCheck(null).appendField("do");
+      // this.setColour("#2F8AD0");
+      this.setColour("120")
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setOnChange(function (changeEvent) {
+        if (changeEvent.blockId === this.id) {
+          if (changeEvent.type === "move") {
+          }
+        }
+      });
+      this.setTooltip("");
+      this.setHelpUrl("");
+    }
+  };
+
 };
 
 export default customBlocks;

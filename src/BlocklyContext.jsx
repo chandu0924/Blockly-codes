@@ -18,6 +18,10 @@ const BlocklyProvider = ( props ) => {
       return savedTask[index]; 
     };
 
+    const deleteTask = (index) => {
+      setSavedTask((prev) => prev.filter((value, i) => i !== index)); 
+    };
+
     useEffect(() => {
       if (initialXml !== null) {
         setXmlLoaded(true);
@@ -46,7 +50,8 @@ const BlocklyProvider = ( props ) => {
           onUpdateInitialXml, 
           saveTask,
           savedTask,
-          loadTask 
+          loadTask,
+          deleteTask
         }}>
             {props.children}
         </BlocklyContext.Provider>

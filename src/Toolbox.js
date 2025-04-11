@@ -49,7 +49,8 @@ const Toolbox = () => {
         name: 'custom blocks',
         colour: '#F1C40F',
         contents: [
-          { kind: 'block', type: 'math_square' }
+          { kind: 'block', type: 'math_square' },
+          { kind: 'block', type: 'repeat_block' }
         ]
       },
       {

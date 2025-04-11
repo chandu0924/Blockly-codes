@@ -112,8 +112,12 @@ const Programming = () => {
                 <ul>
                     {blocklyContext.savedTask && blocklyContext.savedTask.length > 0 ? (
                 blocklyContext.savedTask.map((xmlText, index) => (
+    
                     <li key={index}>
                         <button onClick={() => handleLoadProgram(index)}>Load Saved Program {index+1}</button>
+                    <button onClick={() => blocklyContext.deleteTask(index)}>
+                        &#128465;
+                    </button>
                     </li>
                 ))
             ) : (

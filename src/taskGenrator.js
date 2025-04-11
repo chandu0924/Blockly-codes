@@ -66,6 +66,95 @@ var generateCode = function (id_ = "") {
     return `console.log(${number});\n`;
   };
 
+  taskCodeGenerator.forBlock["repeat_block"] = function (block) {
+
+    let nextBlock = block.getNextBlock() && block.getNextBlock().id ? block.getNextBlock().id : "null"
+    let repeat_type = block.getField("repeat_type").value_
+    if (repeat_type === "Itr") {
+      let value = block.getField('iter_check').value_ ? -1 : block.getField('iterations').value_
+      let result = {
+        "block_type": "repeat_block",
+        "child_block": block.childBlocks_[0].id,
+        "next_block": nextBlock,
+        "params": {
+          "mode": "0",
+          "value": value.toString(),
+          "exp_block": "null"
+        }
+      }
+      json_object[block.id] = result
+      taskCodeGenerator.blockToCode(block.childBlocks_[0])
+    }
+    else if (repeat_type === "T") {
+      let value = block.getField('seconds').value_
+      let result = {
+        "block_type": "repeat_block",
+        "child_block": block.childBlocks_[0].id,
+        "next_block": nextBlock,
+        "params": {
+          "mode": "1",
+          "value": value.toString(),
+          "exp_block": "null"
+        }
+      }
+      json_object[block.id] = result
+      taskCodeGenerator.blockToCode(block.childBlocks_[0])
+    }
+    else if (repeat_type === "exp") {
+      let childBlock
+      let exp_block
+      let state = true
+      for (let i = 0; i < block.childBlocks_.length; i++) {
+        if (block.childBlocks_[i].type === "compare") {
+          exp_block = block.childBlocks_[i]
+        }
+  
+        if (block.childBlocks_[i].type != "compare" && state) {
+          childBlock = block.childBlocks_[i]
+          state = false
+        }
+      }
+      let result = {
+        "block_type": "repeat_block",
+        "child_block": childBlock.id,
+        "next_block": nextBlock,
+        "params": {
+          "mode": "2",
+          "value": "0",
+          "exp_block": exp_block.id
+        }
+      }
+      json_object[block.id] = result
+      taskCodeGenerator.blockToCode(exp_block)
+      taskCodeGenerator.blockToCode(childBlock)
+    }
+  
+    return ""
+  
+  }
+  
+  taskCodeGenerator.forBlock["compare"] = function (block) {
+    let operator = block.inputList[1].fieldRow[0].selectedOption[0]
+  
+    let result = {
+      "block_type": "compare_block",
+      "child_block": block.getInputTargetBlock(`A`).id,
+      "next_block": "null",
+      "params": {
+        "compare_op": operator
+      }
+    }
+  
+    json_object[block.id] = result
+    taskCodeGenerator.valueToCode(block, "A", 0);
+    json_object[block.getInputTargetBlock(`A`).id].next_block = block.getInputTargetBlock(`B`).id
+    taskCodeGenerator.valueToCode(block, "B", 0);
+  
+    console.log(json_object)
+  
+    return ""
+  }
+
   
   taskCodeGenerator.forBlock["math_square"] = function(block) {
     // const number = taskCodeGenerator.getFieldValue("NUMBER");
