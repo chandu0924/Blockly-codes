@@ -1,4 +1,5 @@
-import "./customBlocks";
+import "./customBlocks/mathSquare";
+import "./customBlocks/repeatBlock";
 
 const Toolbox = () => {
   return {

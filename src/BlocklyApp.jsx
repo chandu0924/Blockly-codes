@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as Blockly from 'blockly';
 import Toolbox from './Toolbox';  
 import {javascriptGenerator} from 'blockly/javascript';
-import customBlocks from './customBlocks';
+// import customBlocks from './customBlocks';
 
 const BlocklyApp = () => {
   const blocklyDiv = useRef(null);  

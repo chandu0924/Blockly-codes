@@ -7,7 +7,7 @@ import { javascriptGenerator } from 'blockly/javascript';
 import { generateCode, taskCodeGenerator } from './taskGenrator.js';
 import * as Blockly from 'blockly'; 
 import { DEFAULT_OPTIONS } from './Default.js';
-import customBlocks from './customBlocks.js';
+// import customBlocks from './customBlocks.js';
 import "./App.css"
 import "./Programming.css"
 var ws_instance;
@@ -44,7 +44,7 @@ const Programming = () => {
     }
     useEffect(() => {
         defineCustomBlocks();
-        customBlocks();
+        // customBlocks();
     }, []);
 
     useEffect(() => {

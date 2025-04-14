@@ -39,10 +39,10 @@ var generateCode = function (id_ = "") {
 
   //   return `console.log(${text});`;
   // };
-  taskCodeGenerator.forBlock["text_print"] = function(block) {
-    const text = taskCodeGenerator.valueToCode(block, "TEXT", 0);
-    return `console.log(${text});\n`;
-  };
+  // taskCodeGenerator.forBlock["text_print"] = function(block) {
+  //   const text = taskCodeGenerator.valueToCode(block, "TEXT", 0);
+  //   return `console.log(${text});\n`;
+  // };
   
   taskCodeGenerator.forBlock["start"] = function (block) {
     let nextBlock = block.getChildren()[0] && block.getChildren()[0].id ? block.getChildren()[0].id : "null"
@@ -155,6 +155,58 @@ var generateCode = function (id_ = "") {
     return ""
   }
 
+  taskCodeGenerator.forBlock["text_print"] = function (block) {
+    // Use Blockly's built-in code generator for text blocks
+    const text = taskCodeGenerator.valueToCode(block, "TEXT", Blockly.ORDER_ATOMIC);
+    
+    // Return JavaScript code for printing the text
+    return `console.log(${text});\n`;
+  };
+  
+  taskCodeGenerator.forBlock["repeat_block"] = function (block) {
+    const repeatType = block.getFieldValue("repeat_type"); // "Itr", "T", or "exp"
+    const nextBlock = block.getNextBlock() ? block.getNextBlock().id : "null";
+    
+    let code = '';
+    let childBlockCode = '';
+  
+    // Generate code based on the repeatType
+    if (repeatType === "Itr") {
+      const value = block.getField('iter_check').value_ ? -1 : block.getField('iterations').value_;
+      const childBlock = block.childBlocks_[0];
+      childBlockCode = taskCodeGenerator.blockToCode(childBlock); // Generate code for the child block
+      code = `for (let i = 0; i < ${value}; i++) {\n${childBlockCode}\n}\n`;
+    }
+    else if (repeatType === "T") {
+      const value = block.getField('seconds').value_;
+      const childBlock = block.childBlocks_[0];
+      childBlockCode = taskCodeGenerator.blockToCode(childBlock); // Generate code for the child block
+      code = `setTimeout(() => {\n${childBlockCode}\n}, ${value} * 1000);\n`;
+    }
+    else if (repeatType === "exp") {
+      let expBlock = null;
+      let childBlock = null;
+  
+      // Separate the expression block and child block
+      for (let i = 0; i < block.childBlocks_.length; i++) {
+        if (block.childBlocks_[i].type === "compare") {
+          expBlock = block.childBlocks_[i];
+        } else if (!childBlock) {
+          childBlock = block.childBlocks_[i];
+        }
+      }
+  
+      const expCode = taskCodeGenerator.blockToCode(expBlock); // Generate code for the expression
+      childBlockCode = taskCodeGenerator.blockToCode(childBlock); // Generate code for the child block
+  
+      code = `while (${expCode}) {\n${childBlockCode}\n}\n`;
+    }
+  
+    console.log(code); // Output generated code to the console
+    return code;
+  
+    // return "";
+  };
   
   taskCodeGenerator.forBlock["math_square"] = function(block) {
     // const number = taskCodeGenerator.getFieldValue("NUMBER");
